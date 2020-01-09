@@ -1,0 +1,38 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    network: mainnet
+    source:
+      address: "0xc32659651d137a18b79925449722855aa327231d"
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - DomainTransferred
+        - OwnerChanged
+        - DomainConfigured
+        - DomainUnlisted
+        - NewRegistration
+        - RentPaid
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: DomainTransferred(indexed bytes32,string)
+          handler: handleDomainTransferred
+        - event: OwnerChanged(indexed bytes32,indexed address,indexed address)
+          handler: handleOwnerChanged
+        - event: DomainConfigured(indexed bytes32)
+          handler: handleDomainConfigured
+        - event: DomainUnlisted(indexed bytes32)
+          handler: handleDomainUnlisted
+        - event: NewRegistration(indexed bytes32,string,indexed address,indexed address,uint256)
+          handler: handleNewRegistration
+        - event: RentPaid(indexed bytes32,string,uint256,uint256)
+          handler: handleRentPaid
+      file: ./src/mapping.ts
